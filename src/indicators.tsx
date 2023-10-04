@@ -1,30 +1,39 @@
-import { forwardRef } from "react";
-import { GalleryProps } from "./gallery";
+import { forwardRef, useContext, useMemo } from "react";
+import { GalleryContext, GalleryProps } from "./gallery";
 import React from "react";
-import { GalleryItemId } from "./items";
 
-export interface GalleryIndicatorProps extends GalleryProps {
-  itemId: GalleryItemId;
+export interface GalleryIndicatorProps extends Omit<GalleryProps, "className"> {
+  galleryItemIndex: number;
+  className?: string | ((isCurrent: boolean) => string);
 }
-
-export const Indicators = forwardRef(function Indicators(
-  props: GalleryProps,
-  ref: React.Ref<HTMLDivElement>
-) {
-  return (
-    <div className={props.className} style={props.style} ref={ref}>
-      <h1>Indicators 3</h1>
-    </div>
-  );
-});
 
 export const Indicator = forwardRef(function Indicator(
   props: GalleryIndicatorProps,
   ref: React.Ref<HTMLButtonElement>
 ) {
+  const context = useContext(GalleryContext);
+
+  const onClick = () => {
+    context?.onChangeItemIndex(props.galleryItemIndex);
+  };
+
+  const finalClassName = useMemo<string | undefined>(() => {
+    const finalClassName =
+      typeof props.className === "function"
+        ? props.className(context?.currentItemIndex === props.galleryItemIndex)
+        : props.className;
+
+    return finalClassName;
+  }, [context?.currentItemIndex, props.className]);
+
   return (
-    <button className={props.className} style={props.style} ref={ref}>
-      <h1>Indicator</h1>
+    <button
+      className={finalClassName}
+      style={props.style}
+      ref={ref}
+      onClick={onClick}
+    >
+      {props.children}
     </button>
   );
 });
