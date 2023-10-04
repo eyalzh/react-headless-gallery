@@ -9,6 +9,7 @@
   "scripts": {
     "prepublishOnly": "npm run build",
     "build": "tsc --declaration --jsx react-jsx",
+    "watch": "tsc --watch --declaration --jsx react-jsx",
     "lint": "eslint src --ext .ts,.tsx"
   },
   "peerDependencies": {
