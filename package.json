@@ -1,0 +1,26 @@
+{
+  "name": "react-headless-gallery",
+  "description": "React headless infinite gallery (carousel) component",
+  "version": "1.0.1",
+  "main": "build/index.js",
+  "typings": "build/index.d.ts",
+  "author": "<eyalzh@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "prepublishOnly": "npm run build",
+    "build": "tsc --declaration --jsx react-jsx",
+    "lint": "eslint src --ext .ts,.tsx"
+  },
+  "peerDependencies": {
+    "react": "^16 || ^17 || ^18"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.22",
+    "@types/react-dom": "^18.2.8",
+    "@typescript-eslint/eslint-plugin": "^6.7.3",
+    "@typescript-eslint/parser": "^6.7.3",
+    "eslint": "^8.50.0",
+    "eslint-plugin-react": "^7.33.2",
+    "typescript": "^5.2.2"
+  }
+}
