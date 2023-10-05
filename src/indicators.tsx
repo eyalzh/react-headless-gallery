@@ -1,14 +1,16 @@
-import { forwardRef, useContext, useMemo } from "react";
+import { forwardRef, useContext } from "react";
 import {
+  GalleryBaseProps,
   GalleryContext,
-  GalleryProps,
   getOptimisticItemIndex,
 } from "./gallery";
 import React from "react";
 
-export interface GalleryIndicatorProps extends Omit<GalleryProps, "className"> {
+export interface GalleryIndicatorProps
+  extends Omit<GalleryBaseProps, "className"> {
   galleryItemIndex: number;
   className?: string | ((isCurrent: boolean) => string);
+  "aria-label"?: string | ((itemNumber: number, isCurrent: boolean) => string);
 }
 
 export const Indicator = forwardRef(function Indicator(
@@ -21,18 +23,23 @@ export const Indicator = forwardRef(function Indicator(
     context?.onChangeItemIndex(props.galleryItemIndex);
   };
 
-  const finalClassName = useMemo<string | undefined>(() => {
-    const optimisticItemIndex = getOptimisticItemIndex(
-      context?.currentItemIndex ?? 0,
-      context?.numberOfItems ?? 0
-    );
-    const finalClassName =
-      typeof props.className === "function"
-        ? props.className(optimisticItemIndex === props.galleryItemIndex)
-        : props.className;
+  const optimisticItemIndex = getOptimisticItemIndex(
+    context?.currentItemIndex ?? 0,
+    context?.numberOfItems ?? 0
+  );
 
-    return finalClassName;
-  }, [context?.currentItemIndex, context?.numberOfItems, props.className]);
+  const finalClassName =
+    typeof props.className === "function"
+      ? props.className(optimisticItemIndex === props.galleryItemIndex)
+      : props.className;
+
+  const finalAriaLabel =
+    typeof props["aria-label"] === "function"
+      ? props["aria-label"](
+          props.galleryItemIndex + 1,
+          optimisticItemIndex === props.galleryItemIndex
+        )
+      : props["aria-label"];
 
   return (
     <button
@@ -40,6 +47,10 @@ export const Indicator = forwardRef(function Indicator(
       style={props.style}
       ref={ref}
       onClick={onClick}
+      aria-label={
+        finalAriaLabel ?? `Go to item number ${props.galleryItemIndex + 1}`
+      }
+      aria-controls={context?.galleryId}
     >
       {props.children}
     </button>

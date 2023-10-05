@@ -1,9 +1,13 @@
 import { forwardRef, useContext } from "react";
-import { GalleryContext, GalleryProps } from "./gallery";
+import { GalleryBaseProps, GalleryContext } from "./gallery";
 import React from "react";
 
+interface GalleryNavigationProps extends GalleryBaseProps {
+  "aria-label"?: string;
+}
+
 export const Next = forwardRef(function Next(
-  props: GalleryProps,
+  props: GalleryNavigationProps,
   ref: React.Ref<HTMLButtonElement>
 ) {
   const context = useContext(GalleryContext);
@@ -16,8 +20,9 @@ export const Next = forwardRef(function Next(
       className={props.className}
       style={props.style}
       ref={ref}
-      aria-label="Next Item"
       onClick={onClick}
+      aria-label={props["aria-label"] ?? "Next Item"}
+      aria-controls={context?.galleryId}
     >
       {props.children}
     </button>
@@ -25,7 +30,7 @@ export const Next = forwardRef(function Next(
 });
 
 export const Prev = forwardRef(function Prev(
-  props: GalleryProps,
+  props: GalleryNavigationProps,
   ref: React.Ref<HTMLButtonElement>
 ) {
   const context = useContext(GalleryContext);
@@ -37,8 +42,9 @@ export const Prev = forwardRef(function Prev(
       className={props.className}
       style={props.style}
       ref={ref}
-      aria-label="Previous Item"
       onClick={onClick}
+      aria-label={props["aria-label"] ?? "Previous Item"}
+      aria-controls={context?.galleryId}
     >
       {props.children}
     </button>

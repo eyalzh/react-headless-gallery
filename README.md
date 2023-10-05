@@ -10,7 +10,7 @@ Headless, zero-dependencies, gallery/carousel component.
 - Gallery indicators
 - Allows for lazy loading of gallery items
 - Freely style and position all elements of the component
-- Built with accessibility in mind
+- Built with accessibility in mind (see accessibility below)
 
 ## Example
 
@@ -25,7 +25,7 @@ function MyGallery() {
   const items = [
     {
       id: 1,
-      content: "Item 1", // any React node is allowed
+      content: "Item 1", // any React node is allowed (non-focusable)
     },
     {
       id: 2,
@@ -70,6 +70,10 @@ function MyGallery() {
 }
 ```
 
+
+## Accessibility
+
+The gallery's controls (next, prev, and indicators) are buttons with ARIA labels that can be changed. They are defined as controlling the gallery container with the aria-controls attribute. Please note that all items in the gallery will have the aria-hidden attribute, except for the item that is currently being shown. Items in the gallery should not include focusable elements.
 
 ## API
 

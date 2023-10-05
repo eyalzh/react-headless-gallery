@@ -1,20 +1,30 @@
-import { createContext, forwardRef, useEffect } from "react";
+import { createContext, forwardRef, useEffect, useId } from "react";
 import React from "react";
 
-export interface GalleryProps {
+export interface GalleryBaseProps {
   className?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode;
 }
 
-export interface GalleryItemsProps extends GalleryProps {
+type EasingFunction = "ease" | "ease-in" | "ease-in-out" | "ease-out";
+
+export interface GalleryProps extends GalleryBaseProps {
+  transitionDurationMS?: number; // default 300
+  transitionTimingFunction?: EasingFunction; // default ease-in-out
+}
+
+export interface GalleryItemsProps extends GalleryBaseProps {
   children: React.ReactElement[];
 }
 
 interface GalleryContext {
+  readonly galleryId: string;
   readonly currentItemIndex: number;
   readonly numberOfItems: number;
   readonly animationEnabled: boolean;
+  readonly transitionDurationMS: number;
+  readonly transitionTimingFunction: EasingFunction;
   onChangeItemIndex: (newItemIndex: number) => void;
   navigate: (delta: number) => void;
   onChangeNumberOfItems: (newNumberOfItems: number) => void;
@@ -26,14 +36,19 @@ export const GalleryContainer = forwardRef(function Container(
   props: GalleryProps,
   ref: React.Ref<HTMLDivElement>
 ) {
+  const galleryIdSuffix = useId();
   const [currentItemIndex, setCurrentItemIndex] = React.useState(0);
   const [numberOfItems, setNumberOfItems] = React.useState(0);
   const [animationEnabled, setAnimationEnabled] = React.useState(true);
 
+  const transitionDurationMS = props.transitionDurationMS ?? 300;
   const contextValue = {
+    galleryId: "__headless_gallery__" + galleryIdSuffix,
     currentItemIndex: currentItemIndex,
     numberOfItems: numberOfItems,
     animationEnabled: animationEnabled,
+    transitionDurationMS,
+    transitionTimingFunction: props.transitionTimingFunction ?? "ease-in-out",
     onChangeItemIndex: (newItemIndex: number) => {
       setCurrentItemIndex(newItemIndex);
     },
@@ -45,7 +60,7 @@ export const GalleryContainer = forwardRef(function Container(
         return Math.max(Math.min(prev + delta, numberOfItems), -1);
       });
     },
-  };
+  } satisfies GalleryContext;
 
   useEffect(() => {
     const optimisticItemIndex = getOptimisticItemIndex(
@@ -57,10 +72,10 @@ export const GalleryContainer = forwardRef(function Container(
       const timer = setTimeout(() => {
         setAnimationEnabled(false);
         setCurrentItemIndex(optimisticItemIndex);
-      }, 300);
+      }, transitionDurationMS);
       return () => clearTimeout(timer);
     }
-  }, [currentItemIndex, numberOfItems]);
+  }, [currentItemIndex, numberOfItems, transitionDurationMS]);
 
   useEffect(() => {
     if (animationEnabled === false) {
