@@ -14,6 +14,8 @@ Headless, zero-dependencies, gallery/carousel component.
 
 ## Example
 
+<img src="https://s3.eu-west-1.amazonaws.com/simple.kanban/gallery1.jpg" width="400" />
+
 (show a gif with sliding, or a link to a demo on github.io)
 
 ## Code Example
@@ -25,45 +27,55 @@ function MyGallery() {
   const items = [
     {
       id: 1,
-      content: "Item 1", // any React node is allowed (non-focusable)
+      content: (
+        <img alt="Item 1" src="..." />
+      ),
     },
     {
       id: 2,
-      content: "Item 2",
+      content: (
+        <img alt="Item 2" loading="lazy" src="..." />
+      ),
     },
     {
       id: 3,
-      content: "Item 3",
+      content: (
+        <img alt="Item 3" loading="lazy" src="..." />
+      ),
     },
-  ];
+  ] as const;
 
   return (
-    <div className="w-full h-full bg-white">
-      <Gallery className="flex flex-col items-center">
-        <div className="flex flex-row">
-          <Gallery.Prev className="cursor-pointer">
+    <div className="w-full h-full bg-white p-32">
+      <Gallery className="flex flex-col items-center gap-4">
+        <div className="flex flex-row gap-2 items-center">
+          <Gallery.Prev className="cursor-pointer text-gray-800">
             <LeftSVG />
           </Gallery.Prev>
-          <Gallery.Items className="w-[400px]">
+          <Gallery.Items className="w-[640px]">
             {items.map((item) => (
-              <Gallery.Item
-                key={item.id}
-                itemId={item.id}
-                className="text-center bg-red-300 h-96"
-              >
+              <Gallery.Item key={item.id}>
                 {item.content}
               </Gallery.Item>
             ))}
           </Gallery.Items>
-          <Gallery.Next className="cursor-pointer">
+          <Gallery.Next className="cursor-pointer text-gray-800">
             <RightSVG />
           </Gallery.Next>
         </div>
-        <Gallery.Indicators>
-          <Gallery.Indicator itemId={1}>1</Gallery.Indicator>
-          <Gallery.Indicator itemId={2}>2</Gallery.Indicator>
-          <Gallery.Indicator itemId={3}>3</Gallery.Indicator>
-        </Gallery.Indicators>
+        <div className="flex flex-row gap-2">
+          {[...Array(items.length)].map((_, i) => (
+            <Gallery.Indicator
+              key={i}
+              galleryItemIndex={i}
+              className={(isCurrent) =>
+                `text-sm cursor-pointer ${isCurrent ? "text-gray-800" : "text-gray-300"}`
+              }
+            >
+              ⬤
+            </Gallery.Indicator>
+          ))}
+        </div>
       </Gallery>
     </div>
   );
