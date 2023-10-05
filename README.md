@@ -4,14 +4,21 @@ Headless, zero-dependencies, gallery/carousel component.
 
 ## Features
 
-- Infinite slider both ways (circular gallery)
-- Style all elements of the component
+- Infinite sliding (circular gallery)
+- Sliding animation (configurable)
+- Auto sliding (configurable)
+- Gallery indicators
+- Allows for lazy loading of gallery items
+- Freely style and position all elements of the component
 - Built with accessibility in mind
-
 
 ## Example
 
+(show a gif with sliding, or a link to a demo on github.io)
+
 ## Code Example
+
+The following code example uses tailwind to style the gallery, as shown in the image above:
 
 ```jsx
 function MyGallery() {

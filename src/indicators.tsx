@@ -1,5 +1,9 @@
 import { forwardRef, useContext, useMemo } from "react";
-import { GalleryContext, GalleryProps } from "./gallery";
+import {
+  GalleryContext,
+  GalleryProps,
+  getOptimisticItemIndex,
+} from "./gallery";
 import React from "react";
 
 export interface GalleryIndicatorProps extends Omit<GalleryProps, "className"> {
@@ -18,13 +22,17 @@ export const Indicator = forwardRef(function Indicator(
   };
 
   const finalClassName = useMemo<string | undefined>(() => {
+    const optimisticItemIndex = getOptimisticItemIndex(
+      context?.currentItemIndex ?? 0,
+      context?.numberOfItems ?? 0
+    );
     const finalClassName =
       typeof props.className === "function"
-        ? props.className(context?.currentItemIndex === props.galleryItemIndex)
+        ? props.className(optimisticItemIndex === props.galleryItemIndex)
         : props.className;
 
     return finalClassName;
-  }, [context?.currentItemIndex, props.className]);
+  }, [context?.currentItemIndex, context?.numberOfItems, props.className]);
 
   return (
     <button

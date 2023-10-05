@@ -14,7 +14,7 @@ export interface GalleryItemsProps extends GalleryProps {
 interface GalleryContext {
   readonly currentItemIndex: number;
   readonly numberOfItems: number;
-  animationEnabled: boolean;
+  readonly animationEnabled: boolean;
   onChangeItemIndex: (newItemIndex: number) => void;
   navigate: (delta: number) => void;
   onChangeNumberOfItems: (newNumberOfItems: number) => void;
@@ -32,6 +32,8 @@ export const GalleryContainer = forwardRef(function Container(
 
   const contextValue = {
     currentItemIndex: currentItemIndex,
+    numberOfItems: numberOfItems,
+    animationEnabled: animationEnabled,
     onChangeItemIndex: (newItemIndex: number) => {
       setCurrentItemIndex(newItemIndex);
     },
@@ -43,24 +45,18 @@ export const GalleryContainer = forwardRef(function Container(
         return Math.max(Math.min(prev + delta, numberOfItems), -1);
       });
     },
-    numberOfItems: numberOfItems,
-    animationEnabled: animationEnabled,
   };
 
   useEffect(() => {
-    if (currentItemIndex === numberOfItems) {
+    const optimisticItemIndex = getOptimisticItemIndex(
+      currentItemIndex,
+      numberOfItems
+    );
+    if (currentItemIndex !== optimisticItemIndex) {
       console.log("setting loopnack timeout");
       const timer = setTimeout(() => {
         setAnimationEnabled(false);
-        setCurrentItemIndex(0);
-      }, 300);
-      return () => clearTimeout(timer);
-    }
-    if (currentItemIndex === -1) {
-      console.log("setting loopnack timeout");
-      const timer = setTimeout(() => {
-        setAnimationEnabled(false);
-        setCurrentItemIndex(numberOfItems - 1);
+        setCurrentItemIndex(optimisticItemIndex);
       }, 300);
       return () => clearTimeout(timer);
     }
@@ -82,3 +78,16 @@ export const GalleryContainer = forwardRef(function Container(
     </GalleryContext.Provider>
   );
 });
+
+export function getOptimisticItemIndex(
+  itemIndex: number,
+  numberOfItems: number
+) {
+  if (itemIndex === numberOfItems) {
+    return 0;
+  }
+  if (itemIndex === -1) {
+    return numberOfItems - 1;
+  }
+  return itemIndex;
+}
