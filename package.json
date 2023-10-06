@@ -13,7 +13,7 @@
     "lint": "eslint src --ext .ts,.tsx"
   },
   "peerDependencies": {
-    "react": "^16 || ^17 || ^18"
+    "react": "^18"
   },
   "devDependencies": {
     "@types/react": "^18.2.22",

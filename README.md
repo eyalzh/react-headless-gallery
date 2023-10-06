@@ -6,21 +6,18 @@ Headless, zero-dependencies, gallery/carousel component.
 
 - Infinite sliding (circular gallery)
 - Sliding animation (configurable)
-- Auto sliding (configurable)
 - Gallery indicators
-- Allows for lazy loading of gallery items
+- Allows for lazy loading of gallery items (see example below)
 - Freely style and position all elements of the component
 - Built with accessibility in mind (see accessibility below)
 
 ## Example
 
-<img src="https://s3.eu-west-1.amazonaws.com/simple.kanban/gallery1.jpg" width="400" />
-
-(show a gif with sliding, or a link to a demo on github.io)
+<img src="https://s3.eu-west-1.amazonaws.com/simple.kanban/gallery1.jpg" width="400" alt="Gallery demo" />
 
 ## Code Example
 
-The following code example uses tailwind to style the gallery, as shown in the image above:
+The following code example uses TailwindCSS to style the gallery, as shown in the image above:
 
 ```jsx
 function MyGallery() {
@@ -89,9 +86,37 @@ The gallery's controls (next, prev, and indicators) are buttons with ARIA labels
 
 ## API
 
+### Gallery
+
+| Name | Type | Description |
+|------|------|-------------|
+| `transitionDurationMS` | `number` | The duration of the transition in milliseconds. Default: `300`. |
+| `transitionTimingFunction` | `EasingFunction` | The timing function for the transition. Default: `ease-in-out`. |
+| `className` | `string` | Additional CSS classes to apply to the component. |
+| `style` | `React.CSSProperties` | Inline styles to apply to the component. |
+| `ref` | `React.Ref<HTMLDivElement>` | ref object to the HTML container element. |
+
+### Gallery.Indicator
+
+| Name | Type | Description |
+|------|------|-------------|
+| `galleryItemIndex` | `number` | The index of the item to switch to. |
+| `aria-label` | ` string \| ((itemNumber: number, isCurrent: boolean) => string)` | ARIA label for the button. |
+| `className` | `string \| ((isCurrent: boolean) => string)` | Additional CSS classes to apply to the component. |
+| `style` | `React.CSSProperties` | Inline styles to apply to the button. |
+| `ref` | `React.Ref<HTMLButtonElement>` | ref object to the HTML button element. |
+
+## Gallery.Prev and Gallery.Next
+
+| Name | Type | Description |
+|------|------|-------------|
+| `aria-label` | ` string` | ARIA label for the button. |
+| `className` | `string` | Additional CSS classes to apply to the component. |
+| `style` | `React.CSSProperties` | Inline styles to apply to the button. |
+| `ref` | `React.Ref<HTMLButtonElement>` | ref object to the HTML button element. |
+
+
 ## Note on infinite sliding
 
-To implement infinite sliding, the first and last gallery elements are cloned - each will appear twice in the DOM. If that causes undesirable side effects, please disable infinite sliding.
+To implement infinite sliding, the first and last gallery elements are cloned - each will appear twice in the DOM. If that causes undesirable side effects, please create an issue.
 
-## See also
-(link to chatbox)

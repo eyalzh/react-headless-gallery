@@ -36,9 +36,7 @@ export const Items = forwardRef(function Items(
       : "none",
   };
 
-  console.log("render items");
   const itemChildren = useMemo(() => {
-    console.log("itemChildren calc");
     const firstChild = React.Children.toArray(props.children)[0];
     const clonedFirst = cloneElement(firstChild as ReactElement, {
       key: "__gallery__first-child",

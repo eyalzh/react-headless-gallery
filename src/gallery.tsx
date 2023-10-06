@@ -68,7 +68,6 @@ export const GalleryContainer = forwardRef(function Container(
       numberOfItems
     );
     if (currentItemIndex !== optimisticItemIndex) {
-      console.log("setting loopnack timeout");
       const timer = setTimeout(() => {
         setAnimationEnabled(false);
         setCurrentItemIndex(optimisticItemIndex);
@@ -79,7 +78,6 @@ export const GalleryContainer = forwardRef(function Container(
 
   useEffect(() => {
     if (animationEnabled === false) {
-      console.log("setting re-enable animation timeout ");
       const timer = setTimeout(() => setAnimationEnabled(true), 50);
       return () => clearTimeout(timer);
     }
