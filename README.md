@@ -11,6 +11,16 @@ Headless, zero-dependencies, gallery/carousel component.
 - Freely style and position all elements of the component
 - Built with accessibility in mind (see accessibility below)
 
+## Install
+
+```bash
+npm install react-headless-gallery
+```
+
+```bash
+yarn add react-headless-gallery
+```
+
 ## Example
 
 <img src="https://s3.eu-west-1.amazonaws.com/simple.kanban/gallery1.jpg" width="400" alt="Gallery demo" />
