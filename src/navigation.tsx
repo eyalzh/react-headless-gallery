@@ -2,7 +2,7 @@ import { forwardRef, useContext } from "react";
 import { GalleryBaseProps, GalleryContext } from "./gallery";
 import React from "react";
 
-interface GalleryNavigationProps extends GalleryBaseProps {
+export interface GalleryNavigationProps extends GalleryBaseProps {
   "aria-label"?: string;
 }
 
