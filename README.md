@@ -25,6 +25,9 @@ yarn add react-headless-gallery
 
 <img src="https://s3.eu-west-1.amazonaws.com/simple.kanban/gallery1.jpg" width="400" alt="Gallery demo" />
 
+
+[Click here for a live demo](https://headless-demo2.s3.us-east-2.amazonaws.com/index.html)
+
 ## Code Example
 
 The following code example uses TailwindCSS to style the gallery, as shown in the image above:
