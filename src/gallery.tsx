@@ -10,8 +10,10 @@ export interface GalleryBaseProps {
 type EasingFunction = "ease" | "ease-in" | "ease-in-out" | "ease-out";
 
 export interface GalleryProps extends GalleryBaseProps {
-  transitionDurationMS?: number; // default 300
-  transitionTimingFunction?: EasingFunction; // default ease-in-out
+  transitionDurationMS?: number; // default: 300
+  transitionTimingFunction?: EasingFunction; // default: ease-in-out
+  selfLooping?: false | number; // default false (number is the interval in ms).
+  stopLoopingOnInteraction?: boolean; // Stop self looping if any of the controls is interacted with (default: true)
 }
 
 export interface GalleryItemsProps extends GalleryBaseProps {
@@ -26,7 +28,7 @@ interface GalleryContext {
   readonly transitionDurationMS: number;
   readonly transitionTimingFunction: EasingFunction;
   onChangeItemIndex: (newItemIndex: number) => void;
-  navigate: (delta: number) => void;
+  navigate: (delta: number, isUserInitiated: boolean) => void;
   onChangeNumberOfItems: (newNumberOfItems: number) => void;
 }
 
@@ -40,8 +42,17 @@ export const GalleryContainer = forwardRef(function Container(
   const [currentItemIndex, setCurrentItemIndex] = React.useState(0);
   const [numberOfItems, setNumberOfItems] = React.useState(0);
   const [animationEnabled, setAnimationEnabled] = React.useState(true);
+  const [interactionDetected, setInteractionDetected] = React.useState(false);
 
   const transitionDurationMS = props.transitionDurationMS ?? 300;
+  const navigate = (delta: number, isUserInitiated: boolean) => {
+    setCurrentItemIndex((prev) => {
+      return Math.max(Math.min(prev + delta, numberOfItems), -1);
+    });
+    if (isUserInitiated) {
+      setInteractionDetected(true);
+    }
+  };
   const contextValue = {
     galleryId: "__headless_gallery__" + galleryIdSuffix,
     currentItemIndex: currentItemIndex,
@@ -51,15 +62,12 @@ export const GalleryContainer = forwardRef(function Container(
     transitionTimingFunction: props.transitionTimingFunction ?? "ease-in-out",
     onChangeItemIndex: (newItemIndex: number) => {
       setCurrentItemIndex(newItemIndex);
+      setInteractionDetected(true);
     },
     onChangeNumberOfItems: (newNumberOfItems: number) => {
       setNumberOfItems(newNumberOfItems);
     },
-    navigate: (delta: number) => {
-      setCurrentItemIndex((prev) => {
-        return Math.max(Math.min(prev + delta, numberOfItems), -1);
-      });
-    },
+    navigate,
   } satisfies GalleryContext;
 
   useEffect(() => {
@@ -82,6 +90,23 @@ export const GalleryContainer = forwardRef(function Container(
       return () => clearTimeout(timer);
     }
   }, [animationEnabled]);
+
+  useEffect(() => {
+    const stopSelfLooping =
+      interactionDetected && props.stopLoopingOnInteraction !== false;
+    if (props.selfLooping && !stopSelfLooping) {
+      const timer = setInterval(() => {
+        navigate(1, false);
+      }, props.selfLooping);
+      return () => clearInterval(timer);
+    }
+  }, [
+    props.selfLooping,
+    props.stopLoopingOnInteraction,
+    numberOfItems,
+    navigate,
+    interactionDetected,
+  ]);
 
   return (
     <GalleryContext.Provider value={contextValue}>

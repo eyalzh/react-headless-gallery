@@ -6,6 +6,7 @@ Headless, zero-dependencies, gallery/carousel component.
 
 - Infinite sliding (circular gallery)
 - Sliding animation (configurable)
+- Self looping (configurable)
 - Gallery indicators
 - Allows for lazy loading of gallery items (see example below)
 - Freely style and position all elements of the component
@@ -23,10 +24,10 @@ yarn add react-headless-gallery
 
 ## Example
 
+[Click here for a live demo](https://headless-demo2.s3.us-east-2.amazonaws.com/index.html)
+
 <img src="https://s3.eu-west-1.amazonaws.com/simple.kanban/gallery1.jpg" width="400" alt="Gallery demo" />
 
-
-[Click here for a live demo](https://headless-demo2.s3.us-east-2.amazonaws.com/index.html)
 
 ## Code Example
 
@@ -105,6 +106,8 @@ The gallery's controls (next, prev, and indicators) are buttons with ARIA labels
 |------|------|-------------|
 | `transitionDurationMS` | `number` | The duration of the transition in milliseconds. Default: `300`. |
 | `transitionTimingFunction` | `EasingFunction` | The timing function for the transition. Default: `ease-in-out`. |
+| `selfLooping` | `false \| number` | Enable self-looping. If a number is provided, it will be used as the looping interval in milliseconds. Default: `false` |
+| `stopLoopingOnInteraction` | `boolean` | If true, self looping will stop when the gallery is interacted with (default: `true`) |
 | `className` | `string` | Additional CSS classes to apply to the component. |
 | `style` | `React.CSSProperties` | Inline styles to apply to the component. |
 | `ref` | `React.Ref<HTMLDivElement>` | ref object to the HTML container element. |

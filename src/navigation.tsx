@@ -13,7 +13,7 @@ export const Next = forwardRef(function Next(
   const context = useContext(GalleryContext);
 
   const onClick = () => {
-    context?.navigate(1);
+    context?.navigate(1, true);
   };
   return (
     <button
@@ -35,7 +35,7 @@ export const Prev = forwardRef(function Prev(
 ) {
   const context = useContext(GalleryContext);
   const onClick = () => {
-    context?.navigate(-1);
+    context?.navigate(-1, true);
   };
   return (
     <button

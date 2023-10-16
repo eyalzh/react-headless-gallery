@@ -1,7 +1,7 @@
 {
   "name": "react-headless-gallery",
   "description": "React headless infinite gallery (carousel) component",
-  "version": "1.0.3",
+  "version": "1.1.3",
   "main": "build/index.js",
   "typings": "build/index.d.ts",
   "author": "<eyalzh@gmail.com>",
