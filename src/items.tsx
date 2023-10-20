@@ -63,7 +63,13 @@ export const Items = forwardRef(function Items(
   }, [props.children, context?.currentItemIndex]);
 
   return (
-    <div className={props.className} style={finalStyle} ref={ref} id={context?.galleryId} aria-label="Gallery">
+    <div
+      className={props.className}
+      style={finalStyle}
+      ref={ref}
+      id={context?.galleryId}
+      aria-label="Gallery"
+    >
       <div style={windowStyle}>{itemChildren}</div>
     </div>
   );
